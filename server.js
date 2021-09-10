@@ -5,26 +5,37 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express')
 const app = express()
 const expressLayouts = require('express-ejs-layouts')
-const partials = require('express-partials')
+// const partials = require('express-partials')
+const bodyParser = require('body-parser')
 
 const indexRouter = require('./routes/index')
+const authorRouter = require('./routes/authors')
+
+
+//EJS setups
 
 app.set('view engine', 'ejs')
-app.use(partials())
+// app.use(partials())
 app.set('views', __dirname + '/views')
 app.set('layout', 'layouts/layout')
-app.set(expressLayouts)
-app.set(express.static('public'))
+app.use(expressLayouts)
+app.use(express.static('public'))
+app.use(bodyParser.urlencoded({limit: '10mb', extended : false}))
+
+//database Connection
 
 const mongoose = require('mongoose')
-
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
-
 const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Connected to Mongoose'))
 
+//Routes
+
 app.use('/', indexRouter)
+app.use('/authors', authorRouter)
+
+//Listning to the Server
 
 app.listen(process.env.PORT || 3001)
 
