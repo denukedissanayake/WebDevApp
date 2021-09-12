@@ -21,7 +21,7 @@
     <label>Publish Date</label>
     <input type="date" name="publishedDate" 
         value="<%= book.publishedDate == null ? '' : 
-        book.publishedDate.toString().split('T')[0] %>">
+        book.publishedDate.toISOString().split('T')[0] %>">
 </div>
 
 <div>
