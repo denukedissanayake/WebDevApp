@@ -31,13 +31,10 @@ const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Connected to Mongoose'))
 
-
 //Routes
 app.use('/', indexRouter)
 app.use('/authors', authorRouter)
 app.use('/books', bookRouter)
 
 //Listning to the Server
-
 app.listen(process.env.PORT || 3001)
-

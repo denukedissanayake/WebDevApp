@@ -9,6 +9,8 @@
     <link
     href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
     rel="stylesheet"/>
+
+    <link rel="stylesheet" href="/stylesheets/main.css"/>
     
     <script defer src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     <script defer src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script>
@@ -20,10 +22,14 @@
     <title>eLibrary</title>
 </head>
 <body>
-    <%- include('../partials/header.ejs')%>
-    <%- include('../partials/errorMessage.ejs')%>
-    <br>
-    <%- body%>
-    <br>
+    <div class="container">
+        <%- include('../partials/header.ejs')%>
+
+        <div class="linear-container">
+            <%- include('../partials/errorMessage.ejs')%>   
+            <%- body%>
+        </div>
+    </div>
+
 </body>
 </html>
