@@ -1,0 +1,11 @@
+.author-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.author-name {
+  font-size: 1.2rem;
+}
