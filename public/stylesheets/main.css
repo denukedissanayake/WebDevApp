@@ -4,6 +4,7 @@
 @import "shared/form.css";
 @import "shared/author.css";
 @import "shared/book.css";
+@import "shared/auth.css";
 
 :root {
   font-family: sans-serif;
