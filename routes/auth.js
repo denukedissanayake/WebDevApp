@@ -16,9 +16,10 @@ const Users = []
 
 
 router.get('/', checkAuthenticated, (req, res) => {
-    res.render('auth/index.ejs', {
-        name: req.user.name
-    })
+    // res.render('auth/index.ejs', {
+    //     name: req.user.name
+    // })
+    res.redirect('/')
 })
 
 router.get('/login', checkNotAuthenticated, (req, res) => {
