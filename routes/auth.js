@@ -5,6 +5,8 @@ const passport = require('passport')
 const initializePassport = require('../passport-config')
 const bcrypt = require('bcrypt')
 
+const { checkAuthenticated, checkNotAuthenticated } = require('../permission')
+
 
 initializePassport(
     passport,
@@ -63,20 +65,20 @@ router.delete('/logout', (req, res) => {
 })
 
 
-function checkAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next()
-    }
+// function checkAuthenticated(req, res, next) {
+//     if (req.isAuthenticated()) {
+//         return next()
+//     }
 
-    res.redirect('/auth/login')
-}
+//     res.redirect('/auth/login')
+// }
 
-function checkNotAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return res.redirect('/auth')
-    }
-    next()
-}
+// function checkNotAuthenticated(req, res, next) {
+//     if (req.isAuthenticated()) {
+//         return res.redirect('/auth')
+//     }
+//     next()
+// }
 
 
 module.exports = router

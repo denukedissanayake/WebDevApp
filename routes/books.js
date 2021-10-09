@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Book = require('../models/book')
 const Author = require('../models/author')
+const { setPermissions, checkAuthenticated } = require('../permission')
 
 const imageMimeTypes = ['image/jpeg' , 'image/png', 'image/gif']
 
@@ -34,12 +35,12 @@ router.get('/', async (req, res) => {
 })
 
 //New Book Route
-router.get('/new', async (req, res) => {
+router.get('/new', checkAuthenticated, async (req, res) => {
     renderNewPage(res, new Book())
 })
 
 //Create Book Route
-router.post('/', async (req, res) => {
+router.post('/', checkAuthenticated, async (req, res) => {
 
     const book = new Book({
         title: req.body.title,
@@ -62,15 +63,21 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
+
+    // console.log(setPermissions(req,res))
+
     try {
         const book = await Book.findById(req.params.id).populate('author').exec()
-        res.render('books/show', {book: book})
+        res.render('books/show', {
+            book: book,
+            canEdit: setPermissions(req,res)
+        })
     } catch {
         res.redirect('/')
     }
 })
 
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', checkAuthenticated, async (req, res) => {
 
     try {
         const book = await Book.findById(req.params.id)
@@ -80,7 +87,7 @@ router.get('/:id/edit', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkAuthenticated, async (req, res) => {
 
     let book
 
@@ -109,7 +116,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkAuthenticated, async (req, res) => {
     let book
     try {
         book = await Book.findById(req.params.id)

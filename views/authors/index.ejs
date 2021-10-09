@@ -22,10 +22,14 @@
         <div class="author-name"><%= author.name %></div>
         <div class="btn-row">
             <a class="btn btn-primary" href="/authors/<%= author.id%>">View</a>
-            <a class="btn btn-primary" href="/authors/<%= author.id%>/edit">Edit</a>
-            <%- include('../partials/deleteform', {
-                url: `/authors/${author.id}`
-            })%>
+
+            <% if(canEdit){ %>
+                <a class="btn btn-primary" href="/authors/<%= author.id%>/edit">Edit</a>
+                <%- include('../partials/deleteform', {
+                    url: `/authors/${author.id}`
+                })%>
+            <% } %> 
+
         </div>
    </div>
 <% }); %>

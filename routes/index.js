@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const Book = require('../models/book')
 
+const { setPermissions, checkAuthenticated } = require('../permission')
+
 router.get('/', async (req, res) => {
 
     let books = []
@@ -11,7 +13,10 @@ router.get('/', async (req, res) => {
     } catch {
         books = []
     }
-    res.render('index', {books: books})
+    res.render('index', {
+        books: books,
+        canEdit: setPermissions(req,res)
+    })
 })
 
 module.exports = router 

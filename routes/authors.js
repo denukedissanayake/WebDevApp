@@ -3,6 +3,7 @@ const router = express.Router()
 
 const Author = require('../models/author')
 const Book = require('../models/book')
+const { setPermissions, checkAuthenticated } = require('../permission')
 
 //All authoes Route
 router.get('/', async (req, res) => {
@@ -16,7 +17,8 @@ router.get('/', async (req, res) => {
         res.render('authors/index',
             {
                 authors: authors,
-                searchOptions: req.query
+                searchOptions: req.query,
+                canEdit: setPermissions(req,res)
             })
     } catch {
         res.redirect('/')
@@ -24,12 +26,12 @@ router.get('/', async (req, res) => {
 })
 
 //New Author Route
-router.get('/new', (req, res) => {
+router.get('/new', checkAuthenticated, (req, res) => {
     res.render('authors/new', {author: new Author() })
 })
 
 //Create Author
-router.post('/', async (req, res) => {
+router.post('/', checkAuthenticated, async (req, res) => {
     const author = new Author({
         name: req.body.name
     })
@@ -52,14 +54,15 @@ router.get('/:id', async (req, res) => {
         const books = await Book.find({ author: author.id }).limit(6)
         res.render('authors/show', {
             author: author,
-            booksByAuthor: books
+            booksByAuthor: books,
+            canEdit: setPermissions(req,res)
         })
     } catch {
         res.redirect('/')
     }
 })
 
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', checkAuthenticated, async (req, res) => {
 
     try {
         const author = await Author.findById(req.params.id)
@@ -69,7 +72,7 @@ router.get('/:id/edit', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkAuthenticated, async (req, res) => {
     let author
     try {
 
@@ -89,7 +92,7 @@ router.put('/:id', async (req, res) => {
     }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkAuthenticated, async (req, res) => {
     let author
     try {
         author = await Author.findById(req.params.id)
